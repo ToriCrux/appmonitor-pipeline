@@ -1,0 +1,30 @@
+name: Executar Monitoramento
+
+on:
+  workflow_dispatch:
+
+jobs:
+  usar-env:
+    name: Job com ENV
+    runs-on: ubuntu-latest
+    env:
+      AMBIENTE: ${{ vars.APP_ENV }}
+    steps:
+      - name: Mostrar variável de ambiente
+        run: 'echo Executando no ambiente: $AMBIENTE'
+
+  usar-vars:
+    name: Job com VARS
+    runs-on: ubuntu-latest
+    steps:
+      - name: Acessar variável de contexto
+        run: 'echo E-mail de suporte: ${{ vars.SUPPORT_EMAIL }}'
+
+  usar-secrets:
+    name: Job com SECRET
+    runs-on: ubuntu-latest
+    steps:
+      - name: Aplicar API_KEY secreta
+        env:
+          API_KEY: ${{ secrets.API_KEY }}
+        run: 'echo A chave da API foi recebida com sucesso!'
