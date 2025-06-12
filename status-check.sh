@@ -1,13 +1,13 @@
 #!/bin/bash
 
-echo "[INFO] Iniciando verificação de status da aplicação..."
+echo "[INFO] Iniciando verificação de status..."
 
 app_status="online"
 
-if [ "$app_status" == "online" ]; then
-  echo "[OK] A aplicação está ativa e respondendo corretamente."
+if [ "$app_status" = "online" ]; then
+  echo "[OK] Aplicação ativa."
   exit 0
 else
-  echo "[ERRO] A aplicação não está acessível no momento!"
+  echo "[ERRO] Aplicação inativa!"
   exit 1
 fi
