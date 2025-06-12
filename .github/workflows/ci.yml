@@ -8,45 +8,55 @@ on:
 
 jobs:
   validate:
-    name: Verificação de Sintaxe
+    name: Validação do Script
     runs-on: ubuntu-latest
     steps:
-      - name: Clonar Repositório
+      - name: Clonar o repositório
         uses: actions/checkout@v3
 
-      - name: Analisar sintaxe do script Bash
-        run: bash -n status-check.sh
+      - name: Validar sintaxe do script
+        run: |
+          echo "::warning::Iniciando validação do script status-check.sh"
+          bash -n status-check.sh || echo "::error::Erro de sintaxe encontrado!"
 
   test:
-    name: Simulação de Testes
+    name: Testes Simulados
     runs-on: ubuntu-latest
     needs: validate
     steps:
-      - name: Clonar Repositório
+      - name: Clonar o repositório
         uses: actions/checkout@v3
 
-      - name: Rodar testes fictícios
+      - name: Executar testes fictícios
         run: |
-          echo "Executando testes simulados..."
+          echo "[INFO] Executando testes..."
+          echo "::warning::Este é apenas um teste simulado"
           exit 0
 
   package:
-    name: Empacotar Relatório
+    name: Empacotar e Resumir
     runs-on: ubuntu-latest
     needs: test
     steps:
-      - name: Clonar Repositório
+      - name: Clonar o repositório
         uses: actions/checkout@v3
 
       - name: Gerar arquivo report.zip
         run: |
           mkdir -p output
-          echo "Este é um exemplo de relatório de testes." > output/test-summary.txt
+          echo "Resumo fictício dos testes." > output/test-report.txt
           cp status-check.sh output/
           zip -r report.zip output/
 
-      - name: Enviar artefato gerado
+      - name: Publicar artefato
         uses: actions/upload-artifact@v4
         with:
-          name: artefato-appmonitor
+          name: relatorio-monitorado
           path: report.zip
+
+      - name: Gerar summary
+        run: |
+          echo "### Relatório do CI" >> $GITHUB_STEP_SUMMARY
+          echo "- Sistema operacional: \`${{ runner.os }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Branch analisada: \`${{ github.ref_name }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Artefato gerado: [report.zip](./runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY
