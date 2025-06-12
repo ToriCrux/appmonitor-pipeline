@@ -1,3 +1,5 @@
+![CI Status](https://img.shields.io/github/actions/workflow/status/ToriCrux/appmonitor-pipeline/ci.yml?branch=main&label=CI%20Status)
+
 # 1. AppMonitor Pipeline - Objetivo
 
 Este repositório foi criado como parte do Assessment Final da disciplina de Pipelines de CI/CD e DevOps, com o objetivo de simular a monitoração de aplicações web por meio de scripts e automações utilizando GitHub Actions. Embora não haja uma aplicação web real, todo o pipeline de entrega e monitoração foi estruturado de forma realista para refletir boas práticas de integração contínua (CI) e entrega contínua (CD).
@@ -37,4 +39,13 @@ O projeto utiliza três tipos de configuração no GitHub Actions para gerenciar
 - **`secrets` (segredos):** armazenam informações sensíveis como senhas e chaves de API. Não são visíveis nos logs e são acessadas por `${{ secrets.NOME }}`. Exemplo: `API_KEY`.
 
 Esses recursos ajudam a manter o pipeline seguro, flexível e desacoplado de valores fixos no código.
+
+---
+<br>
+
+## 5. Logs e Resumos no GitHub Actions
+
+Durante a execução do pipeline, o GitHub Actions registra logs detalhados de cada etapa, permitindo identificar com precisão falhas e comportamentos inesperados. Além disso, também é possível ativar logs de depuração com a variável `ACTIONS_STEP_DEBUG=true`, que fornece ainda mais detalhes internos.
+
+E, os summaries (resumos) personalizados podem ser adicionados ao final do job, apresentando informações como sistema operacional, branch analisada, status da execução e links úteis — como o do artefato gerado. Esses recursos aumentam a visibilidade e facilitam o diagnóstico em pipelines mais complexos.
 
