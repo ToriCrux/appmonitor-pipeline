@@ -49,3 +49,26 @@ Durante a execução do pipeline, o GitHub Actions registra logs detalhados de c
 
 E, os summaries (resumos) personalizados podem ser adicionados ao final do job, apresentando informações como sistema operacional, branch analisada, status da execução e links úteis — como o do artefato gerado. Esses recursos aumentam a visibilidade e facilitam o diagnóstico em pipelines mais complexos.
 
+---
+<br>
+
+## 6. Deploy com Aprovação Manual
+
+Para garantir segurança no processo de entrega configurar um ambiente de produção, que exige **aprovação manual obrigatória** antes da execução do deploy, é uma forma de controle que promove segunrança e governança para o projeto.
+
+ Nesse projeto foi implementado essa ação através de um ambiente chamado `production`, além da construçaõ do workflow `deploy.yml` que é executado apenas após a liberação manual. A variável `PROD_DOMAIN=appmonitor.com` foi definida nesse ambiente, sendo utilizada para simular o deploy real.
+
+Esse processo simula um cenário corporativo em que alterações em produção só ocorrem com validação humana, aumentando a confiabilidade do sistema.
+
+---
+<br>
+
+## 7. Diagnóstico de Falhas Automatizado
+
+Foi criado o workflow `diagnostic.yml` para verificar se variáveis essenciais, como `APP_ENV` e `API_KEY`, estão corretamente configuradas.
+
+O pipeline emite mensagens de erro (`::error::`) caso alguma delas esteja ausente, além de gerar um resumo automático no job (summary) com instruções para correção. Esse comportamento simula uma rotina de **validação resiliente**, permitindo diagnósticos rápidos e acionáveis.
+
+Esse tipo de verificação fortalece a observabilidade e evita falhas silenciosas durante a execução dos workflows.
+
+
