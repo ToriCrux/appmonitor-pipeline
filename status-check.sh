@@ -2,7 +2,7 @@
 
 echo "[INFO] Iniciando verificação de status..."
 
-astatus="online"
+status="online"
 
 if [ "$status" = "online" ]; then
   echo "[OK] Aplicação ativa."
