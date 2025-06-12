@@ -1,0 +1,55 @@
+name: Verificação de Configurações Críticas
+
+on:
+  workflow_dispatch:
+
+jobs:
+  diagnostico:
+    name: Diagnóstico Automatizado
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Início da análise
+        run: 'echo Iniciando análise das variáveis obrigatórias...'
+
+      - name: Checagem das variáveis
+        run: |
+          echo "::group::Executando verificação de APP_ENV e API_KEY..."
+
+          erro=0
+
+          if [ -z "${{ vars.APP_ENV }}" ]; then
+            echo "::error::Variável APP_ENV ausente. É necessário definir em Actions > Variables."
+            erro=1
+          else
+            echo "::notice::APP_ENV presente: ${{ vars.APP_ENV }}"
+          fi
+
+          if [ -z "${{ secrets.API_KEY }}" ]; then
+            echo "::error::Segredo API_KEY não localizado. Configure em Actions > Secrets."
+            erro=1
+          else
+            echo "::notice::API_KEY carregada com sucesso."
+          fi
+
+          echo "::endgroup::"
+
+          if [ $erro -eq 1 ]; then
+            echo "## Problemas detectados" >> $GITHUB_STEP_SUMMARY
+            echo "Algumas configurações obrigatórias não estão definidas corretamente." >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**Itens obrigatórios a revisar:**" >> $GITHUB_STEP_SUMMARY
+            echo "- `APP_ENV` em *Settings > Variables*" >> $GITHUB_STEP_SUMMARY
+            echo "- `API_KEY` em *Settings > Secrets*" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Corrija os itens acima e execute o workflow novamente." >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
+
+      - name: Finalização
+        run: |
+          echo "::notice::Todas as variáveis foram encontradas corretamente."
+
+          echo "##Diagnóstico Bem-Sucedido" >> $GITHUB_STEP_SUMMARY
+          echo "Todas as variáveis obrigatórias estão configuradas." >> $GITHUB_STEP_SUMMARY
+          echo "Nenhuma ação adicional é necessária." >> $GITHUB_STEP_SUMMARY
